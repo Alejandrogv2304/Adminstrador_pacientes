@@ -1,13 +1,16 @@
 import {useForm} from 'react-hook-form'
 import Error from './Error';
 import type { DraftPatient } from '../types';
+import { usePatient } from '../store';
 
 export default function PatientForm() {
+  const addPatient = usePatient(state => state.addPatient)
 
-    const {register, handleSubmit, formState:{errors}} = useForm<DraftPatient>();
+    const {register, handleSubmit, formState:{errors}, reset} = useForm<DraftPatient>();
 
     const registerPatient = (data:DraftPatient) =>{
-    console.log(data)
+    addPatient(data)
+    reset()
     }
 
   return (
@@ -73,7 +76,7 @@ export default function PatientForm() {
                 {...register('email',{
                        required: 'El Email es obligatorio',
                        pattern:{
-                        value:/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/,
+                        value: /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/,
                         message:"Email no válido"
                        }
                 })}
